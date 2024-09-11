@@ -1,0 +1,59 @@
+import java.util.Scanner;
+
+public class Hangman {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String[] words = {"apple", "banana", "orange", "grape", "pear", "kiwi", "mango", "strawberry", "blueberry", "raspberry"};
+        String wordToGuess = words[(int) (Math.random() * words.length)];
+        char[] guessedLetters = new char[wordToGuess.length()];
+        int lives = 6;
+
+        for (int i = 0; i < guessedLetters.length; i++) {
+            guessedLetters[i] = '_';
+        }
+
+        while (lives > 0) {
+            System.out.println("\nCurrent word:");
+            printWord(guessedLetters);
+            System.out.println("\nLives remaining: " + lives);
+            System.out.print("Guess a letter: ");
+            char guess = scanner.next().charAt(0);
+
+            boolean isCorrect = false;
+            for (int i = 0; i < wordToGuess.length(); i++) {
+                if (wordToGuess.charAt(i) == guess) {
+                    guessedLetters[i] = guess;
+                    isCorrect = true;
+                }
+            }
+
+            if (!isCorrect) {
+                lives--;
+            }
+
+            if (isWordGuessed(guessedLetters)) {
+                System.out.println("\nCongratulations! You guessed the word: " + wordToGuess);
+                break;
+            }
+        }
+
+        if (lives == 0) {
+            System.out.println("\nGame over! The word was: " + wordToGuess);
+        }
+    }
+
+    private static void printWord(char[] guessedLetters) {
+        for (char letter : guessedLetters) {
+            System.out.print(letter + " ");
+        }
+    }
+
+    private static boolean isWordGuessed(char[] guessedLetters) {
+        for (char letter : guessedLetters) {
+            if (letter == '_') {
+                return false;
+            }
+        }
+        return true;
+    }
+}
